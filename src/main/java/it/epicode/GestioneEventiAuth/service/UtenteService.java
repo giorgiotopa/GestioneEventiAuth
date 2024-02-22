@@ -2,8 +2,11 @@ package it.epicode.GestioneEventiAuth.service;
 
 import it.epicode.GestioneEventiAuth.enums.TipoUtente;
 import it.epicode.GestioneEventiAuth.exception.NotFoundException;
+import it.epicode.GestioneEventiAuth.model.Evento;
+import it.epicode.GestioneEventiAuth.model.Prenotazione;
 import it.epicode.GestioneEventiAuth.model.Utente;
 import it.epicode.GestioneEventiAuth.model.UtenteRequest;
+import it.epicode.GestioneEventiAuth.repository.PrenotazioneRepository;
 import it.epicode.GestioneEventiAuth.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +18,8 @@ import java.util.List;
 public class UtenteService {
     @Autowired
     private UtenteRepository utenteRepository;
+    @Autowired
+    private PrenotazioneRepository prenotazioneRepository;
     @Autowired
     private PasswordEncoder encoder;
 
@@ -42,7 +47,7 @@ public class UtenteService {
     }
 
     public Utente updateUtente(String username, UtenteRequest utenteRequest){
-        Utente utente =getUtenteByUsername(username);
+        Utente utente = getUtenteByUsername(username);
         utente.setNome(utenteRequest.getNome());
         utente.setCognome(utenteRequest.getCognome());
         utente.setUsername(utenteRequest.getUsername());
@@ -51,13 +56,22 @@ public class UtenteService {
         return utenteRepository.save(utente);
     }
 
-    public Utente updateRoleUtente(String username,String tipoUtente){
-        Utente utente =getUtenteByUsername(username);
+    public Utente updateTipoUtente(String username,String tipoUtente){
+        Utente utente = getUtenteByUsername(username);
         utente.setTipoUtente(TipoUtente.valueOf(tipoUtente));
         return utenteRepository.save(utente);
     }
 
-    public void deleteUtente(String username){
-        utenteRepository.deleteByUsername(username).orElseThrow(()->new NotFoundException("Utente non trovato"));
+//    public void deleteUtente(String username){
+//        utenteRepository.deleteByUsername(username).orElseThrow(()->new NotFoundException("Utente non trovato"));
+//    }
+    public void deleteEvento (int id) throws NotFoundException {
+        Utente utente = getUtenteById(id);
+        for (Prenotazione prenotazione : utente.getPrenotazioni()) {
+            prenotazione.setEvento(null);
+            prenotazioneRepository.save(prenotazione);
+
+        }
+        utenteRepository.delete(utente);
     }
 }

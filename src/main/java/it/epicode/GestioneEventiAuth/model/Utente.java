@@ -33,6 +33,14 @@ public class Utente implements UserDetails {
     @OneToMany(mappedBy = "utente")
     private List<Prenotazione> prenotazioni;
 
+
+    public void addPrenotazione(Prenotazione prenotazione) {
+        prenotazioni.add(prenotazione);
+    }
+    public void removePrenotazione(Prenotazione prenotazione) {
+        prenotazioni.remove(prenotazione);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(tipoUtente.name()));

@@ -36,4 +36,11 @@ public class Evento {
         this.luogo = luogo;
         this.postidisponibili = postidisponibili;
     }
+
+    public void addPrenotazione(Prenotazione prenotazione) {
+        prenotazioni.add(prenotazione);
+    }
+    public void removePrenotazione(Prenotazione prenotazione) {
+        prenotazioni.remove(prenotazione);
+    }
 }
