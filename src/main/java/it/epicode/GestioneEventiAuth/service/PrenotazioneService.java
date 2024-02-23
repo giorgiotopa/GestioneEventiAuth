@@ -22,7 +22,7 @@ public class PrenotazioneService {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    public Page<Prenotazione> getAllPrenotazione(Pageable pageable){
+    public Page<Prenotazione> getAllPrenotazioni(Pageable pageable){
 
         return prenotazioneRepository.findAll(pageable);
     }

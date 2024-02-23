@@ -28,21 +28,21 @@ public class EventoController {
         return eventoService.getEventoById(id);
     }
 
-    @PostMapping("/dipendenti")
+    @PostMapping("/eventi")
     public Evento saveEvento(@RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().toString());
         }
         return eventoService.saveEvento(eventoRequest);
     }
-    @PutMapping("/dipendenti/{id}")
+    @PutMapping("/eventi/{id}")
     public Evento updateEvento(@PathVariable int id, @RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().toString());
         }
         return eventoService.updateEvento(id, eventoRequest);
     }
-    @DeleteMapping("/dipendenti/{id}")
+    @DeleteMapping("/eventi/{id}")
     public void deleteEvento(@PathVariable int id){
         eventoService.deleteEvento(id);
     }

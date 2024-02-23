@@ -48,13 +48,13 @@ public class UtenteController {
 //
 //        utenteService.deleteUtente(username);
 //    }
-    @DeleteMapping("/dipendenti/{id}")
-    public void deleteDipendente(@PathVariable int id){
+    @DeleteMapping("/utenti/{id}")
+    public void deleteUtente(@PathVariable int id){
         utenteService.deleteUtente(id);
     }
 
     @PatchMapping("/utenti/{username}")
-    public Utente changeRole(@PathVariable String username, @RequestBody String tipoUtente){
+    public Utente changeTipoUtente(@PathVariable String username, @RequestBody String tipoUtente){
         return utenteService.updateTipoUtente(username, tipoUtente);
 
     }
