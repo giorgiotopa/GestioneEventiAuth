@@ -61,17 +61,13 @@ public class JwtFilter extends OncePerRequestFilter {
         System.out.println(parts.length);
         Arrays.stream(parts).forEach(System.out::println);
         if(parts.length==3) {
-            if (parts[1].equals("dipendenti")) {
+            if (parts[1].equals("utenti")) {
                 int id = Integer.parseInt(parts[2]);
 
                 if(utente.getId()!=id){
                     throw new UnAuthorizedException("Non sei abilitato ad utilizzare il servizio per id differenti dal tuo");
                 }
 
-            } else if (parts[1].equals("utenti")) {
-                if(!utente.getUsername().equals(parts[2])){
-                    throw new UnAuthorizedException("Non sei abilitato ad utilizzare il servizio per un username differente dal tuo");
-                }
             }
         }
     }

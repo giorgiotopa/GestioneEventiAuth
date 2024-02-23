@@ -22,7 +22,6 @@ public class Prenotazione {
 
     public Prenotazione() {
     }
-
     public Prenotazione(Utente utente, Evento evento, int postiPrenotati) {
         this.utente = utente;
         this.evento = evento;

@@ -37,19 +37,6 @@ public class PrenotazioneService {
                 orElseThrow(()->new NotFoundException("Prenotazione con id="+ id + " non trovato"));
     }
 
-//    public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest){
-//        Prenotazione prenotazione = new Prenotazione(prenotazioneRequest.getUtente(),prenotazioneRequest.getEvento());
-//        Utente utente = prenotazioneRequest.getUtente();
-//        Evento evento = prenotazioneRequest.getEvento();
-//
-//        utente.addPrenotazione(prenotazione);
-//        evento.addPrenotazione(prenotazione);
-//        utenteRepository.save(utente);
-//        eventoRepository.save(evento);
-//
-//        return prenotazioneRepository.save(prenotazione);
-//    }
-
 public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest) {
     // Trova gli oggetti Utente ed Evento utilizzando gli identificatori
     Utente utente = utenteRepository.findById(prenotazioneRequest.getUtenteId())
