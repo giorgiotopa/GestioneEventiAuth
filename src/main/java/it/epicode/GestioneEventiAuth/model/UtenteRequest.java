@@ -15,6 +15,5 @@ public class UtenteRequest {
     private String username;
     @NotBlank(message = "password obbligatoria")
     private String password;
-    @NotNull(message = "Il campo 'tipoUtente' non può essere nullo")
-    private TipoUtente tipoUtente;
+
 }

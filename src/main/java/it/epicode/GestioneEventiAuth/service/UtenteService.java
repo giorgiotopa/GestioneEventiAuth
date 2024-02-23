@@ -30,7 +30,7 @@ public class UtenteService {
         utente.setCognome(utenteRequest.getCognome());
         utente.setUsername(utenteRequest.getUsername());
         utente.setPassword(encoder.encode(utenteRequest.getPassword()));
-        utente.setTipoUtente(utenteRequest.getTipoUtente());
+        utente.setTipoUtente(TipoUtente.NORMALE);
 
         return utenteRepository.save(utente);
     }
