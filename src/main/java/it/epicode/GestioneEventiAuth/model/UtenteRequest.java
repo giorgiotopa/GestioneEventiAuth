@@ -2,6 +2,7 @@ package it.epicode.GestioneEventiAuth.model;
 
 import it.epicode.GestioneEventiAuth.enums.TipoUtente;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -14,6 +15,6 @@ public class UtenteRequest {
     private String username;
     @NotBlank(message = "password obbligatoria")
     private String password;
-    @NotBlank(message = "tipo utente obbligatorio")
+    @NotNull(message = "Il campo 'tipoUtente' non può essere nullo")
     private TipoUtente tipoUtente;
 }
