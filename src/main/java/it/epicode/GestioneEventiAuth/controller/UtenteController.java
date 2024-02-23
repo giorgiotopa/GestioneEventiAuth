@@ -43,11 +43,7 @@ public class UtenteController {
 
         return utenteService.save(utenteRequest);
     }
-//    @DeleteMapping("/utenti/{username}")
-//    public void deleteUtente(@PathVariable String username){
-//
-//        utenteService.deleteUtente(username);
-//    }
+
     @DeleteMapping("/utenti/{id}")
     public void deleteUtente(@PathVariable int id){
         utenteService.deleteUtente(id);

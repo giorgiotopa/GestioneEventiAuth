@@ -7,6 +7,7 @@ import it.epicode.GestioneEventiAuth.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class EventoController {
     public Evento getDipendenteById(@PathVariable int id){
         return eventoService.getEventoById(id);
     }
-
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
     @PostMapping("/eventi")
     public Evento saveEvento(@RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -35,6 +36,7 @@ public class EventoController {
         }
         return eventoService.saveEvento(eventoRequest);
     }
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
     @PutMapping("/eventi/{id}")
     public Evento updateEvento(@PathVariable int id, @RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -42,6 +44,7 @@ public class EventoController {
         }
         return eventoService.updateEvento(id, eventoRequest);
     }
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
     @DeleteMapping("/eventi/{id}")
     public void deleteEvento(@PathVariable int id){
         eventoService.deleteEvento(id);

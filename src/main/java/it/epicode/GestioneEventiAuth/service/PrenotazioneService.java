@@ -21,6 +21,10 @@ public class PrenotazioneService {
     private EventoRepository eventoRepository;
     @Autowired
     private UtenteRepository utenteRepository;
+    @Autowired
+    private UtenteService utenteService;
+    @Autowired
+    private EventoService eventoService;
 
     public Page<Prenotazione> getAllPrenotazioni(Pageable pageable){
 
@@ -44,13 +48,14 @@ public class PrenotazioneService {
 //
 //        return prenotazioneRepository.save(prenotazione);
 //    }
+
 public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest) {
     // Trova gli oggetti Utente ed Evento utilizzando gli identificatori
-    Utente utente = utenteRepository.findById(prenotazioneRequest.getUtente())
-            .orElseThrow(() -> new NotFoundException("Utente non trovato con id=" + prenotazioneRequest.getUtente()));
+    Utente utente = utenteRepository.findById(prenotazioneRequest.getUtenteId())
+            .orElseThrow(() -> new NotFoundException("Utente non trovato con id=" + prenotazioneRequest.getUtenteId()));
 
-    Evento evento = eventoRepository.findById(prenotazioneRequest.getEvento())
-            .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEvento()));
+    Evento evento = eventoRepository.findById(prenotazioneRequest.getEventoId())
+            .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEventoId()));
 
     // Crea una nuova istanza di Prenotazione con gli oggetti Utente ed Evento
     Prenotazione prenotazione = new Prenotazione(utente, evento);
@@ -67,19 +72,49 @@ public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest) {
     return prenotazioneRepository.save(prenotazione);
 }
 
-    public void deletePrenotazione(int id) throws NotFoundException {
-        Prenotazione prenotazione = getPrenotazioneById(id);
+//    public void deletePrenotazione(int id) throws NotFoundException {
+//        Prenotazione prenotazione = getPrenotazioneById(id);
+//
+//        Utente utente = prenotazione.getUtente();
+//        Evento evento = prenotazione.getEvento();
+//
+//        utente.removePrenotazione(prenotazione);
+//        evento.removePrenotazione(prenotazione);
+//
+//        utenteRepository.save(utente);
+//        eventoRepository.save(evento);
+//
+//        prenotazioneRepository.delete(prenotazione);
+//    }
+public void deletePrenotazione(int id) throws NotFoundException {
+    Prenotazione prenotazione = getPrenotazioneById(id);
 
-        Utente utente = prenotazione.getUtente();
-        Evento evento = prenotazione.getEvento();
+    Utente utente = prenotazione.getUtente();
+    Evento evento = prenotazione.getEvento();
 
+    if (utente != null) {
         utente.removePrenotazione(prenotazione);
-        evento.removePrenotazione(prenotazione);
-
         utenteRepository.save(utente);
-        eventoRepository.save(evento);
+    }
 
-        prenotazioneRepository.delete(prenotazione);
+    if (evento != null) {
+        evento.removePrenotazione(prenotazione);
+        eventoRepository.save(evento);
+    }
+
+    prenotazioneRepository.delete(prenotazione);
+}
+    public Prenotazione addUtente(int id, int utenteId){
+        Prenotazione prenotazione = getPrenotazioneById(id);
+        Utente utente = utenteService.getUtenteById(utenteId);
+        prenotazione.setUtente(utente);
+        return prenotazioneRepository.save(prenotazione);
+    }
+    public Prenotazione addEvento(int id, int eventoId){
+        Prenotazione prenotazione = getPrenotazioneById(id);
+        Evento evento = eventoService.getEventoById(eventoId);
+        prenotazione.setEvento(evento);
+        return prenotazioneRepository.save(prenotazione);
     }
 
 

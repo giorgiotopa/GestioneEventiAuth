@@ -10,8 +10,8 @@ import lombok.Data;
 public class PrenotazioneRequest {
 
     @NotNull(message = "Utente obbligatorio")
-    Integer utente;
+    Integer utenteId;
     @NotNull(message = "Evento obbligatorio")
-    Integer evento;
+    Integer eventoId;
 }
 
