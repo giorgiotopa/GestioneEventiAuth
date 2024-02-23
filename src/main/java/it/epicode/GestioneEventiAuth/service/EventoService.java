@@ -28,7 +28,7 @@ public class EventoService {
                 orElseThrow(()->new NotFoundException("Evento con id="+ id + " non trovato"));
     }
     public Evento saveEvento(EventoRequest eventoRequest){
-        Evento evento = new Evento(eventoRequest.getTitolo(),eventoRequest.getDescrizione(),eventoRequest.getData(),eventoRequest.getLuogo(),eventoRequest.getPostidisponibili());
+        Evento evento = new Evento(eventoRequest.getTitolo(),eventoRequest.getDescrizione(),eventoRequest.getData(),eventoRequest.getLuogo(),eventoRequest.getPostiDisponibili());
         return eventoRepository.save(evento);
     }
 
@@ -39,7 +39,7 @@ public class EventoService {
         e.setDescrizione(eventoRequest.getDescrizione());
         e.setData(eventoRequest.getData());
         e.setLuogo(eventoRequest.getLuogo());
-        e.setPostidisponibili(eventoRequest.getPostidisponibili());
+        e.setPostidisponibili(eventoRequest.getPostiDisponibili());
         return eventoRepository.save(e);
     }
 

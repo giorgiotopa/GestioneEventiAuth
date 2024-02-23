@@ -34,7 +34,7 @@ public class SecurityChain {
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll());
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/eventi/**").permitAll());
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/prenotazioni/**").permitAll());
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/utenti/**").hasAnyAuthority(TipoUtente.NORMALE.name(), TipoUtente.ORGANIZZATORE.name()));
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/utenti/**").hasAnyAuthority(TipoUtente.ORGANIZZATORE.name()));
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/**").denyAll());
 
         return httpSecurity.build();

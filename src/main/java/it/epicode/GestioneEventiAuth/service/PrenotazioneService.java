@@ -32,18 +32,40 @@ public class PrenotazioneService {
                 orElseThrow(()->new NotFoundException("Prenotazione con id="+ id + " non trovato"));
     }
 
-    public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest){
-        Prenotazione prenotazione = new Prenotazione(prenotazioneRequest.getUtente(),prenotazioneRequest.getEvento());
-        Utente utente = prenotazioneRequest.getUtente();
-        Evento evento = prenotazioneRequest.getEvento();
+//    public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest){
+//        Prenotazione prenotazione = new Prenotazione(prenotazioneRequest.getUtente(),prenotazioneRequest.getEvento());
+//        Utente utente = prenotazioneRequest.getUtente();
+//        Evento evento = prenotazioneRequest.getEvento();
+//
+//        utente.addPrenotazione(prenotazione);
+//        evento.addPrenotazione(prenotazione);
+//        utenteRepository.save(utente);
+//        eventoRepository.save(evento);
+//
+//        return prenotazioneRepository.save(prenotazione);
+//    }
+public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest) {
+    // Trova gli oggetti Utente ed Evento utilizzando gli identificatori
+    Utente utente = utenteRepository.findById(prenotazioneRequest.getUtente())
+            .orElseThrow(() -> new NotFoundException("Utente non trovato con id=" + prenotazioneRequest.getUtente()));
 
-        utente.addPrenotazione(prenotazione);
-        evento.addPrenotazione(prenotazione);
-        utenteRepository.save(utente);
-        eventoRepository.save(evento);
+    Evento evento = eventoRepository.findById(prenotazioneRequest.getEvento())
+            .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEvento()));
 
-        return prenotazioneRepository.save(prenotazione);
-    }
+    // Crea una nuova istanza di Prenotazione con gli oggetti Utente ed Evento
+    Prenotazione prenotazione = new Prenotazione(utente, evento);
+
+    // Aggiungi la prenotazione alle liste di Utente ed Evento
+    utente.addPrenotazione(prenotazione);
+    evento.addPrenotazione(prenotazione);
+
+    // Salva gli oggetti Utente ed Evento
+    utenteRepository.save(utente);
+    eventoRepository.save(evento);
+
+    // Infine, salva la Prenotazione
+    return prenotazioneRepository.save(prenotazione);
+}
 
     public void deletePrenotazione(int id) throws NotFoundException {
         Prenotazione prenotazione = getPrenotazioneById(id);

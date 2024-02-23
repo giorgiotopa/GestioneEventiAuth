@@ -33,6 +33,16 @@ public class Utente implements UserDetails {
     @OneToMany(mappedBy = "utente")
     private List<Prenotazione> prenotazioni;
 
+    public Utente() {
+    }
+
+    public Utente(String nome, String cognome, String username, String password, TipoUtente tipoUtente) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.username = username;
+        this.password = password;
+        this.tipoUtente = tipoUtente;
+    }
 
     public void addPrenotazione(Prenotazione prenotazione) {
         prenotazioni.add(prenotazione);
