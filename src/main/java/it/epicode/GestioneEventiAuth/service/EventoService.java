@@ -18,7 +18,7 @@ public class EventoService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
 
-    public Page<Evento> getAllDipendenti(Pageable pageable){
+    public Page<Evento> getAllEventi(Pageable pageable){
 
         return eventoRepository.findAll(pageable);
     }

@@ -6,7 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
-public interface UtenteRepository extends JpaRepository<Utente, Integer>, PagingAndSortingRepository<Utente, Integer> {
+public interface UtenteRepository extends JpaRepository<Utente, Integer> {
     public Optional<Utente> findByUsername(String username);
     public Optional<Utente> deleteByUsername(String username);
 }

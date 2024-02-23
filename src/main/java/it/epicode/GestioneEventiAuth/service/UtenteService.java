@@ -65,7 +65,7 @@ public class UtenteService {
 //    public void deleteUtente(String username){
 //        utenteRepository.deleteByUsername(username).orElseThrow(()->new NotFoundException("Utente non trovato"));
 //    }
-    public void deleteEvento (int id) throws NotFoundException {
+    public void deleteUtente (int id) throws NotFoundException {
         Utente utente = getUtenteById(id);
         for (Prenotazione prenotazione : utente.getPrenotazioni()) {
             prenotazione.setEvento(null);
