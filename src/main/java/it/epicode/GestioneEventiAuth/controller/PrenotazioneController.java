@@ -44,25 +44,40 @@ public class PrenotazioneController {
     }
 
 
-@PostMapping("/prenotazioni")
-public Prenotazione savePrenotazione(@RequestBody @Validated PrenotazioneRequest prenotazioneRequest, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-        throw new BadRequestException(bindingResult.getAllErrors().toString());
+//@PostMapping("/prenotazioni")
+//public Prenotazione savePrenotazione(@RequestBody @Validated PrenotazioneRequest prenotazioneRequest, BindingResult bindingResult) {
+//    if (bindingResult.hasErrors()) {
+//        throw new BadRequestException(bindingResult.getAllErrors().toString());
+//    }
+//
+//    Utente utente = utenteRepository.findById(Integer.parseInt(String.valueOf(prenotazioneRequest.getUtenteId())))
+//            .orElseThrow(() -> new NotFoundException("Utente non trovato con id=" + prenotazioneRequest.getUtenteId()));
+//
+//    Evento evento = eventoRepository.findById(Integer.parseInt(String.valueOf(prenotazioneRequest.getEventoId())))
+//            .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEventoId()));
+//
+//    PrenotazioneRequest updatedRequest = new PrenotazioneRequest();
+//    updatedRequest.setUtenteId(utente.getId());
+//    updatedRequest.setEventoId(evento.getId());
+//
+//    return prenotazioneService.savePrenotazione(updatedRequest);
+//}
+
+
+    @PostMapping("/prenotazioni")
+    public Prenotazione savePrenotazione(@RequestBody @Validated PrenotazioneRequest prenotazioneRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors().toString());
+        }
+
+        Utente utente = utenteRepository.findById(prenotazioneRequest.getUtenteId())
+                .orElseThrow(() -> new NotFoundException("Utente non trovato con id=" + prenotazioneRequest.getUtenteId()));
+
+        Evento evento = eventoRepository.findById(prenotazioneRequest.getEventoId())
+                .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEventoId()));
+
+        return prenotazioneService.savePrenotazione(prenotazioneRequest);
     }
-
-    Utente utente = utenteRepository.findById(Integer.parseInt(String.valueOf(prenotazioneRequest.getUtenteId())))
-            .orElseThrow(() -> new NotFoundException("Utente non trovato con id=" + prenotazioneRequest.getUtenteId()));
-
-    Evento evento = eventoRepository.findById(Integer.parseInt(String.valueOf(prenotazioneRequest.getEventoId())))
-            .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEventoId()));
-
-    PrenotazioneRequest updatedRequest = new PrenotazioneRequest();
-    updatedRequest.setUtenteId(utente.getId());
-    updatedRequest.setEventoId(evento.getId());
-
-    return prenotazioneService.savePrenotazione(updatedRequest);
-}
-
     @DeleteMapping("/prenotazioni/{id}")
     public void deletePrenotazione(@PathVariable int id){
         prenotazioneService.deletePrenotazione(id);

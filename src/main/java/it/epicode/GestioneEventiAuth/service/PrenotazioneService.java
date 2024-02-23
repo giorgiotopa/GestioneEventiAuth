@@ -1,5 +1,6 @@
 package it.epicode.GestioneEventiAuth.service;
 
+import it.epicode.GestioneEventiAuth.exception.BadRequestException;
 import it.epicode.GestioneEventiAuth.exception.NotFoundException;
 import it.epicode.GestioneEventiAuth.model.Evento;
 import it.epicode.GestioneEventiAuth.model.Prenotazione;
@@ -58,34 +59,31 @@ public Prenotazione savePrenotazione(PrenotazioneRequest prenotazioneRequest) {
             .orElseThrow(() -> new NotFoundException("Evento non trovato con id=" + prenotazioneRequest.getEventoId()));
 
     // Crea una nuova istanza di Prenotazione con gli oggetti Utente ed Evento
-    Prenotazione prenotazione = new Prenotazione(utente, evento);
+    Prenotazione prenotazione = new Prenotazione(utente, evento, prenotazioneRequest.getNumeroPosti());
 
-    // Aggiungi la prenotazione alle liste di Utente ed Evento
-    utente.addPrenotazione(prenotazione);
-    evento.addPrenotazione(prenotazione);
+    int postiDisponibili = evento.getPostidisponibili();
+    int postiPrenotati = prenotazioneRequest.getNumeroPosti();
 
-    // Salva gli oggetti Utente ed Evento
-    utenteRepository.save(utente);
-    eventoRepository.save(evento);
+    if (postiDisponibili >= postiPrenotati) {
+        // Riduci il numero di posti disponibili
+        evento.setPostidisponibili(postiDisponibili - postiPrenotati);
+        eventoRepository.save(evento);
+        // Aggiungi la prenotazione alle liste di Utente ed Evento
+        utente.addPrenotazione(prenotazione);
+        evento.addPrenotazione(prenotazione);
 
-    // Infine, salva la Prenotazione
-    return prenotazioneRepository.save(prenotazione);
+        // Salva gli oggetti Utente ed Evento
+        utenteRepository.save(utente);
+        eventoRepository.save(evento);
+
+        // Infine, salva la Prenotazione
+        return prenotazioneRepository.save(prenotazione);
+    } else {
+        throw new BadRequestException("Posti disponibili insufficienti per l'evento");
+    }
 }
 
-//    public void deletePrenotazione(int id) throws NotFoundException {
-//        Prenotazione prenotazione = getPrenotazioneById(id);
-//
-//        Utente utente = prenotazione.getUtente();
-//        Evento evento = prenotazione.getEvento();
-//
-//        utente.removePrenotazione(prenotazione);
-//        evento.removePrenotazione(prenotazione);
-//
-//        utenteRepository.save(utente);
-//        eventoRepository.save(evento);
-//
-//        prenotazioneRepository.delete(prenotazione);
-//    }
+
 public void deletePrenotazione(int id) throws NotFoundException {
     Prenotazione prenotazione = getPrenotazioneById(id);
 

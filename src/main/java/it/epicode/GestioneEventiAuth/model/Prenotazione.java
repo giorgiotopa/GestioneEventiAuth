@@ -18,11 +18,14 @@ public class Prenotazione {
     @JoinColumn(name = "evento_id")
     Evento evento;
 
+    private int postiPrenotati;
+
     public Prenotazione() {
     }
 
-    public Prenotazione(Utente utente, Evento evento) {
+    public Prenotazione(Utente utente, Evento evento, int postiPrenotati) {
         this.utente = utente;
         this.evento = evento;
+        this.postiPrenotati = postiPrenotati;
     }
 }

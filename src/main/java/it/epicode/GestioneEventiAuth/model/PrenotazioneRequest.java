@@ -13,5 +13,7 @@ public class PrenotazioneRequest {
     Integer utenteId;
     @NotNull(message = "Evento obbligatorio")
     Integer eventoId;
+    @NotNull(message = "Numero posti obbligatorio")
+    Integer numeroPosti;
 }
 
